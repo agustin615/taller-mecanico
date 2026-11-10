@@ -46,3 +46,9 @@ next-env.d.ts
 # base de datos local de SQLite
 /dev.db
 /dev.db-journal
+
+# skills locales instaladas por herramientas de IA
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
