@@ -103,7 +103,7 @@ export default async function Page(props: PageProps<"/">) {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[820px] text-sm">
+          <table className="w-full min-w-[900px] text-sm">
             <thead className="bg-slate-50/70 text-xs uppercase tracking-wide text-slate-500">
               <tr>
                 <th className="px-5 py-2.5 text-left font-semibold">Patente</th>
@@ -113,12 +113,13 @@ export default async function Page(props: PageProps<"/">) {
                 <th className="px-5 py-2.5 text-left font-semibold">Estado</th>
                 <th className="px-5 py-2.5 text-right font-semibold">Monto</th>
                 <th className="px-5 py-2.5 text-right font-semibold">Ingreso</th>
+                <th className="px-5 py-2.5 text-right font-semibold">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {lista.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center text-slate-500">
+                  <td colSpan={8} className="px-5 py-10 text-center text-slate-500">
                     No hay órdenes en este estado.
                   </td>
                 </tr>
@@ -146,6 +147,14 @@ export default async function Page(props: PageProps<"/">) {
                   </td>
                   <td className="px-5 py-3.5 text-right text-[13px] text-slate-500">
                     {formatearFecha(o.ingreso)}
+                  </td>
+                  <td className="px-5 py-3.5 text-right">
+                    <Link
+                      href={`/ordenes/${o.id}`}
+                      className="text-[13px] font-semibold text-blue-700 hover:underline"
+                    >
+                      Editar
+                    </Link>
                   </td>
                 </tr>
               ))}

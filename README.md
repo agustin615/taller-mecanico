@@ -23,14 +23,19 @@ Abrir <http://localhost:3000>.
 | Archivo | Qué hace |
 |---|---|
 | `app/page.tsx` | Listado de órdenes, resumen y filtros |
-| `app/ordenes/nueva/page.tsx` | Formulario de nueva orden |
-| `app/actions.ts` | Server action que valida y guarda la orden |
+| `app/ordenes/nueva/page.tsx` | Página de nueva orden |
+| `app/ordenes/[id]/page.tsx` | Página de edición y borrado |
+| `app/not-found.tsx` | Pantalla 404 |
+| `app/actions.ts` | Server actions: crear, actualizar y eliminar |
+| `components/form-orden.tsx` | Formulario compartido por alta y edición |
+| `components/boton-eliminar.tsx` | Botón de borrar con confirmación |
 | `lib/prisma.ts` | Conexión única a la base de datos |
 | `lib/ordenes.ts` | Tipos (`Orden`, `Estado`) y datos de ejemplo |
 | `lib/formato.ts` | Formateo de montos y fechas |
 | `prisma/schema.prisma` | Modelo de datos |
 | `prisma/seed.ts` | Carga inicial de datos |
 | `prisma7.config.ts` | Configuración del CLI de Prisma |
+| `scripts/db-studio.mjs` | Abre Prisma Studio (esquiva un bug de Prisma 7) |
 
 ## Base de datos
 
@@ -58,6 +63,16 @@ npm run db:migrate
 
 No hay llamadas a una API: el formulario habla directo con el servidor.
 
+Las tres acciones usan la misma validación (`leerDatos`), así las reglas viven en un solo lugar:
+
+| Acción | Cuándo se usa |
+|---|---|
+| `crearOrden` | Alta en `/ordenes/nueva` |
+| `actualizarOrden` | Edición en `/ordenes/[id]` |
+| `eliminarOrden` | Borrado desde `/ordenes/[id]` |
+
+El borrado pide confirmación con `window.confirm`, por eso `components/boton-eliminar.tsx` es el único componente de cliente del proyecto.
+
 ## Historial
 
 | Versión | Tecnología |
@@ -65,9 +80,9 @@ No hay llamadas a una API: el formulario habla directo con el servidor.
 | v1 | HTML, CSS y JavaScript puro (con `localStorage`) |
 | v2 | Next.js 16 + TypeScript + Tailwind |
 | v3 | Base de datos SQLite con Prisma |
+| v4 | Editar y eliminar órdenes (CRUD completo) |
 
 ## Próximos pasos
 
-1. Editar y eliminar órdenes.
-2. Tests del flujo de creación.
-3. Pasar a PostgreSQL y publicarlo en Vercel.
+1. Tests del flujo de creación y edición.
+2. Pasar a PostgreSQL y publicarlo en Vercel.
