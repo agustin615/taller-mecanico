@@ -106,7 +106,6 @@ export function FormOrden({ accion, textoBoton, orden }: Props) {
           name="monto"
           type="number"
           min="0"
-          step="1000"
           placeholder="50000"
           defaultValue={orden?.monto}
           className={estiloCampo}

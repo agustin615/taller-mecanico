@@ -164,7 +164,7 @@ export default async function Page(props: PageProps<"/">) {
       </section>
 
       <p className="mt-5 text-center text-[13px] text-slate-500">
-        Los datos se guardan en SQLite ({ordenes.length} órdenes registradas)
+        Los datos se guardan en PostgreSQL ({ordenes.length} órdenes registradas)
       </p>
     </main>
   );

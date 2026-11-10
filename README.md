@@ -2,7 +2,7 @@
 
 Sistema de órdenes de trabajo para un taller mecánico.
 
-**Stack:** Next.js 16 · TypeScript · Tailwind CSS · Prisma 7 · SQLite
+**Stack:** Next.js 16 · TypeScript · Tailwind CSS · Prisma 7 · PostgreSQL
 
 ## Cómo correrlo
 
@@ -10,8 +10,9 @@ Sistema de órdenes de trabajo para un taller mecánico.
 npm install
 
 cp .env.example .env      # en Windows: copy .env.example .env
+                          # y completar DATABASE_URL y DIRECT_URL
 
-npx prisma migrate dev    # crea la base de datos
+npx prisma migrate dev    # crea las tablas
 npx prisma db seed        # carga las órdenes de ejemplo
 npm run dev
 ```
@@ -35,11 +36,17 @@ Abrir <http://localhost:3000>.
 | `prisma/schema.prisma` | Modelo de datos |
 | `prisma/seed.ts` | Carga inicial de datos |
 | `prisma7.config.ts` | Configuración del CLI de Prisma |
-| `scripts/db-studio.mjs` | Abre Prisma Studio (esquiva un bug de Prisma 7) |
 
 ## Base de datos
 
-SQLite, en el archivo `dev.db` (no se sube al repositorio).
+PostgreSQL. En desarrollo y en producción se usa la misma base administrada (Neon), porque Vercel no conserva archivos entre requests.
+
+El proyecto usa **dos conexiones**:
+
+| Variable | Para qué | Diferencia |
+|---|---|---|
+| `DATABASE_URL` | La app en tiempo de ejecución | Host con `-pooler` (aguanta más conexiones) |
+| `DIRECT_URL` | Solo migraciones | Host directo, sin `-pooler` |
 
 Para ver y editar los datos con una interfaz gráfica:
 
@@ -47,7 +54,7 @@ Para ver y editar los datos con una interfaz gráfica:
 npm run db:studio
 ```
 
-Abre en <http://localhost:5555>. (Prisma 7.10.1 tiene un bug con la URL de SQLite; el script `scripts/db-studio.mjs` lo esquiva.)
+Abre en <http://localhost:5555>.
 
 Cuando cambies `prisma/schema.prisma`:
 
@@ -81,8 +88,10 @@ El borrado pide confirmación con `window.confirm`, por eso `components/boton-el
 | v2 | Next.js 16 + TypeScript + Tailwind |
 | v3 | Base de datos SQLite con Prisma |
 | v4 | Editar y eliminar órdenes (CRUD completo) |
+| v5 | PostgreSQL en Neon (misma base en local y en producción) |
 
 ## Próximos pasos
 
-1. Tests del flujo de creación y edición.
-2. Pasar a PostgreSQL y publicarlo en Vercel.
+1. Deploy en Vercel.
+2. Tests del flujo de creación y edición.
+3. Login mínimo para la demo pública.

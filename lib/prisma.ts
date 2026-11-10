@@ -3,7 +3,7 @@
 // sin este patrón se abrirían conexiones de más.
 
 import "dotenv/config";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
@@ -11,9 +11,13 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function crearCliente() {
-  const adapter = new PrismaBetterSqlite3({
-    url: process.env.DATABASE_URL ?? "file:./dev.db",
-  });
+  const url = process.env.DATABASE_URL;
+
+  if (!url) {
+    throw new Error("Falta DATABASE_URL en el archivo .env");
+  }
+
+  const adapter = new PrismaPg({ connectionString: url });
   return new PrismaClient({ adapter });
 }
 
