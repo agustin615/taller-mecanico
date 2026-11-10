@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taller Ramírez — Órdenes de trabajo</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <div class="contenedor">
+
+    <header class="cabecera">
+      <div>
+        <h1>Taller Ramírez</h1>
+        <p class="subtitulo">Órdenes de trabajo</p>
+      </div>
+      <button class="boton-principal" id="btn-nueva">+ Nueva orden</button>
+    </header>
+
+    <section class="resumen" id="resumen"></section>
+
+    <section class="panel">
+      <div class="panel-cabecera">
+        <h2>Órdenes</h2>
+        <div class="filtros" id="filtros"></div>
+      </div>
+      <div class="tabla" id="tabla"></div>
+    </section>
+
+    <p class="pie">
+    Tus datos se guardan en este navegador ·
+    <button class="enlace" id="btn-reiniciar">restablecer datos de ejemplo</button>
+  </p>
+
+  </div>
+
+  <dialog class="dialogo" id="dialogo-nueva">
+    <form id="form-nueva">
+      <h2>Nueva orden de trabajo</h2>
+
+      <div class="form-grid">
+        <div class="campo">
+          <label for="campo-patente">Patente</label>
+          <input id="campo-patente" name="patente" maxlength="6" placeholder="BJDF42" required>
+        </div>
+
+        <div class="campo">
+          <label for="campo-cliente">Cliente</label>
+          <input id="campo-cliente" name="cliente" placeholder="Nombre del cliente" required>
+        </div>
+
+        <div class="campo">
+          <label for="campo-vehiculo">Vehículo</label>
+          <input id="campo-vehiculo" name="vehiculo" placeholder="Toyota Yaris 2018">
+        </div>
+
+        <div class="campo">
+          <label for="campo-servicio">Servicio</label>
+          <input id="campo-servicio" name="servicio" placeholder="Cambio de aceite">
+        </div>
+
+        <div class="campo">
+          <label for="campo-estado">Estado</label>
+          <select id="campo-estado" name="estado">
+            <option value="en-espera">En espera</option>
+            <option value="en-reparacion">En reparación</option>
+            <option value="listo">Listo</option>
+            <option value="entregado">Entregado</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="campo-monto">Monto (CLP)</label>
+          <input id="campo-monto" name="monto" type="number" min="0" step="1000" placeholder="50000">
+        </div>
+      </div>
+
+      <div class="acciones">
+        <button type="button" class="boton-secundario" id="btn-cancelar">Cancelar</button>
+        <button type="submit" class="boton-principal">Guardar orden</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="aviso" id="aviso"></div>
+
+  <script src="semilla.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

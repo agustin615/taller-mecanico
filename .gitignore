@@ -1,0 +1,17 @@
+# Dependencias
+node_modules/
+
+# Carpeta de compilación de Next.js
+.next/
+out/
+
+# Variables de entorno (nunca subir contraseñas ni claves)
+.env
+.env*.local
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
