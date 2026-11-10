@@ -1,0 +1,25 @@
+// Modelo de datos del taller.
+// Cada cambio acá se convierte en una migración de la base de datos.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Orden {
+  id       Int      @id @default(autoincrement())
+  patente  String
+  cliente  String
+  vehiculo String
+  servicio String
+  estado   String
+  monto    Int
+  ingreso  DateTime
+  creadoEn DateTime @default(now())
+
+  @@index([estado])
+}

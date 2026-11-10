@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { ESTADOS, ordenes, type Estado } from "@/lib/ordenes";
+import { formatearFecha, formatearMonto } from "@/lib/formato";
+import { ESTADOS, esEstado, type Estado, type Orden } from "@/lib/ordenes";
+import { prisma } from "@/lib/prisma";
 
-// Esta página lee el filtro desde la URL (?estado=...), así que necesita
-// renderizarse en cada request en vez de prerenderizarse como página estática.
+// Esta página lee el filtro desde la URL (?estado=...) y consulta la base
+// de datos en cada request, así que no se prerenderiza como página estática.
 export const instant = false;
 
 const FILTROS: { clave: "todas" | Estado; texto: string }[] = [
@@ -20,22 +22,18 @@ const ESTILO_ESTADO: Record<Estado, string> = {
   entregado: "bg-blue-100 text-blue-700",
 };
 
-function formatearMonto(valor: number) {
-  return "$" + valor.toLocaleString("es-CL");
-}
-
-function formatearFecha(iso: string) {
-  return new Date(iso + "T00:00:00").toLocaleDateString("es-CL", {
-    day: "2-digit",
-    month: "short",
-  });
-}
-
 export default async function Page(props: PageProps<"/">) {
   const { estado } = await props.searchParams;
 
   const filtro: "todas" | Estado =
-    typeof estado === "string" && estado in ESTADOS ? (estado as Estado) : "todas";
+    typeof estado === "string" && esEstado(estado) ? estado : "todas";
+
+  const filas = await prisma.orden.findMany({ orderBy: { id: "desc" } });
+
+  const ordenes: Orden[] = filas.map((fila) => ({
+    ...fila,
+    estado: esEstado(fila.estado) ? fila.estado : "en-espera",
+  }));
 
   const lista = filtro === "todas" ? ordenes : ordenes.filter((o) => o.estado === filtro);
 
@@ -62,6 +60,13 @@ export default async function Page(props: PageProps<"/">) {
           <h1 className="text-2xl font-bold tracking-tight">Taller Ramírez</h1>
           <p className="text-sm text-slate-500">Órdenes de trabajo</p>
         </div>
+
+        <Link
+          href="/ordenes/nueva"
+          className="rounded-[10px] bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800"
+        >
+          + Nueva orden
+        </Link>
       </header>
 
       <section className="mb-7 grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -150,7 +155,7 @@ export default async function Page(props: PageProps<"/">) {
       </section>
 
       <p className="mt-5 text-center text-[13px] text-slate-500">
-        Datos de ejemplo · próximo paso: guardar en una base de datos real
+        Los datos se guardan en SQLite ({ordenes.length} órdenes registradas)
       </p>
     </main>
   );

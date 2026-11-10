@@ -2,14 +2,17 @@
 
 Sistema de órdenes de trabajo para un taller mecánico.
 
-Construido con **Next.js 16**, **TypeScript** y **Tailwind CSS**.
-
-> Versión 1 (HTML, CSS y JavaScript puro) disponible en el historial de Git.
+**Stack:** Next.js 16 · TypeScript · Tailwind CSS · Prisma 7 · SQLite
 
 ## Cómo correrlo
 
 ```bash
 npm install
+
+cp .env.example .env      # en Windows: copy .env.example .env
+
+npx prisma migrate dev    # crea la base de datos
+npx prisma db seed        # carga las órdenes de ejemplo
 npm run dev
 ```
 
@@ -19,19 +22,50 @@ Abrir <http://localhost:3000>.
 
 | Archivo | Qué hace |
 |---|---|
-| `app/page.tsx` | Pantalla principal: resumen, filtros y tabla de órdenes |
-| `app/layout.tsx` | Layout raíz: fuentes, idioma y estilos base |
-| `app/globals.css` | Importación de Tailwind y variables de tema |
+| `app/page.tsx` | Listado de órdenes, resumen y filtros |
+| `app/ordenes/nueva/page.tsx` | Formulario de nueva orden |
+| `app/actions.ts` | Server action que valida y guarda la orden |
+| `lib/prisma.ts` | Conexión única a la base de datos |
 | `lib/ordenes.ts` | Tipos (`Orden`, `Estado`) y datos de ejemplo |
+| `lib/formato.ts` | Formateo de montos y fechas |
+| `prisma/schema.prisma` | Modelo de datos |
+| `prisma/seed.ts` | Carga inicial de datos |
+| `prisma7.config.ts` | Configuración del CLI de Prisma |
 
-## Funcionalidad
+## Base de datos
 
-- Listado de órdenes con patente, cliente, vehículo, servicio, estado y monto.
-- Tarjetas de resumen calculadas a partir de los datos.
-- Filtro por estado usando la URL (`/?estado=listo`), sin JavaScript en el cliente.
+SQLite, en el archivo `dev.db` (no se sube al repositorio).
+
+Para ver y editar los datos con una interfaz gráfica:
+
+```bash
+npm run db:studio
+```
+
+Cuando cambies `prisma/schema.prisma`:
+
+```bash
+npm run db:migrate
+```
+
+## Cómo funciona el guardado
+
+1. El formulario envía los datos a una **server action** (`app/actions.ts`).
+2. La acción valida los datos y los guarda con Prisma.
+3. `revalidatePath("/")` refresca el listado y `redirect("/")` vuelve a la tabla.
+
+No hay llamadas a una API: el formulario habla directo con el servidor.
+
+## Historial
+
+| Versión | Tecnología |
+|---|---|
+| v1 | HTML, CSS y JavaScript puro (con `localStorage`) |
+| v2 | Next.js 16 + TypeScript + Tailwind |
+| v3 | Base de datos SQLite con Prisma |
 
 ## Próximos pasos
 
-1. Guardar los datos en una base de datos real (Prisma).
-2. Crear, editar y eliminar órdenes.
-3. Publicarlo online (Vercel) para tener un link en el CV.
+1. Editar y eliminar órdenes.
+2. Tests del flujo de creación.
+3. Pasar a PostgreSQL y publicarlo en Vercel.
