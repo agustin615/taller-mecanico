@@ -42,6 +42,8 @@ Para ver y editar los datos con una interfaz gráfica:
 npm run db:studio
 ```
 
+Abre en <http://localhost:5555>. (Prisma 7.10.1 tiene un bug con la URL de SQLite; el script `scripts/db-studio.mjs` lo esquiva.)
+
 Cuando cambies `prisma/schema.prisma`:
 
 ```bash
