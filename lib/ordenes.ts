@@ -1,14 +1,27 @@
-// Datos de ejemplo (la "semilla").
-// Solo se usan la primera vez; después mandan los datos guardados en el navegador.
+// Datos de las órdenes de trabajo.
+// Por ahora viven en memoria; en el próximo paso pasan a una base de datos.
 
-const ESTADOS = {
-  "en-espera":     "En espera",
-  "en-reparacion": "En reparación",
-  "listo":         "Listo",
-  "entregado":     "Entregado"
+export type Estado = "en-espera" | "en-reparacion" | "listo" | "entregado";
+
+export type Orden = {
+  id: number;
+  patente: string;
+  cliente: string;
+  vehiculo: string;
+  servicio: string;
+  estado: Estado;
+  monto: number;
+  ingreso: string; // fecha en formato AAAA-MM-DD
 };
 
-const ordenesDeEjemplo = [
+export const ESTADOS: Record<Estado, string> = {
+  "en-espera": "En espera",
+  "en-reparacion": "En reparación",
+  listo: "Listo",
+  entregado: "Entregado",
+};
+
+export const ordenes: Orden[] = [
   {
     id: 1,
     patente: "BJDF42",
@@ -17,7 +30,7 @@ const ordenesDeEjemplo = [
     servicio: "Cambio de pastillas de freno",
     estado: "en-reparacion",
     monto: 78000,
-    ingreso: "2026-11-04"
+    ingreso: "2026-11-04",
   },
   {
     id: 2,
@@ -27,7 +40,7 @@ const ordenesDeEjemplo = [
     servicio: "Cambio de aceite y filtro",
     estado: "listo",
     monto: 42000,
-    ingreso: "2026-11-03"
+    ingreso: "2026-11-03",
   },
   {
     id: 3,
@@ -37,7 +50,7 @@ const ordenesDeEjemplo = [
     servicio: "Revisión técnica y alineación",
     estado: "en-espera",
     monto: 35000,
-    ingreso: "2026-11-05"
+    ingreso: "2026-11-05",
   },
   {
     id: 4,
@@ -47,7 +60,7 @@ const ordenesDeEjemplo = [
     servicio: "Cambio de batería",
     estado: "entregado",
     monto: 95000,
-    ingreso: "2026-11-01"
+    ingreso: "2026-11-01",
   },
   {
     id: 5,
@@ -57,7 +70,7 @@ const ordenesDeEjemplo = [
     servicio: "Ajuste de motor",
     estado: "en-reparacion",
     monto: 320000,
-    ingreso: "2026-11-02"
+    ingreso: "2026-11-02",
   },
   {
     id: 6,
@@ -67,6 +80,6 @@ const ordenesDeEjemplo = [
     servicio: "Cambio de amortiguadores",
     estado: "en-espera",
     monto: 145000,
-    ingreso: "2026-11-05"
-  }
+    ingreso: "2026-11-05",
+  },
 ];

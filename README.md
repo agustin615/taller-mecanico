@@ -1,42 +1,37 @@
 # Taller Ramírez
 
-Pantalla de órdenes de trabajo para un taller mecánico.
+Sistema de órdenes de trabajo para un taller mecánico.
 
-Frontend en HTML, CSS y JavaScript puro. Las órdenes se guardan en el
-navegador (`localStorage`), así que sobreviven al recargar la página.
+Construido con **Next.js 16**, **TypeScript** y **Tailwind CSS**.
 
-## Cómo verlo
+> Versión 1 (HTML, CSS y JavaScript puro) disponible en el historial de Git.
 
+## Cómo correrlo
+
+```bash
+npm install
+npm run dev
 ```
-python servidor.py
-```
 
-Después abrir <http://localhost:8123> en el navegador.
+Abrir <http://localhost:3000>.
 
-El servidor no guarda nada en caché, así que al editar un archivo
-basta con recargar la página para ver el cambio.
-
-## Archivos
+## Estructura
 
 | Archivo | Qué hace |
 |---|---|
-| `index.html` | La estructura de la pantalla y el formulario |
-| `estilos.css` | Los colores, tamaños y espaciados |
-| `semilla.js` | Las 6 órdenes de ejemplo (solo la primera vez) |
-| `app.js` | Dibuja la tabla, los filtros y guarda los datos |
-| `servidor.py` | Servidor local para ver el proyecto |
+| `app/page.tsx` | Pantalla principal: resumen, filtros y tabla de órdenes |
+| `app/layout.tsx` | Layout raíz: fuentes, idioma y estilos base |
+| `app/globals.css` | Importación de Tailwind y variables de tema |
+| `lib/ordenes.ts` | Tipos (`Orden`, `Estado`) y datos de ejemplo |
 
-## Cómo funciona el guardado
+## Funcionalidad
 
-1. Al abrir la página, `app.js` busca las órdenes en `localStorage`.
-2. Si no hay nada, usa las de `semilla.js`.
-3. Cada vez que se crea una orden, se guarda en `localStorage`.
-
-El botón "restablecer datos de ejemplo" del pie borra lo guardado.
+- Listado de órdenes con patente, cliente, vehículo, servicio, estado y monto.
+- Tarjetas de resumen calculadas a partir de los datos.
+- Filtro por estado usando la URL (`/?estado=listo`), sin JavaScript en el cliente.
 
 ## Próximos pasos
 
-1. Editar y eliminar órdenes
-2. Pasar el proyecto a Next.js + TypeScript
-3. Guardar en una base de datos real (Supabase) en vez del navegador
-4. Publicarlo online para tener un link en el CV
+1. Guardar los datos en una base de datos real (Prisma).
+2. Crear, editar y eliminar órdenes.
+3. Publicarlo online (Vercel) para tener un link en el CV.
